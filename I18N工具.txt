@@ -1,0 +1,40 @@
+@echo off
+rem 设置编码为utf-8,防止出现乱码
+chcp 65001
+title I18N工具脚本
+rem 设置当前dos窗口高和宽
+rem mode 100,40
+echo --------------------------------------------------
+echo 欢迎使用I18N工具...
+echo --------------------------------------------------
+:start
+choice /C YN /M "请确认您当前的jdk环境是否为jdk1.8(y/n)?"
+if errorlevel 2 (
+if "%JdkDir%"=="" goto getJdkDir
+goto startTools)
+if errorlevel 1 (echo I18N工具启动中 
+goto startTools)
+
+
+:getJdkDir
+set /p JdkDir=请输入您当前系统的jdk1.8环境的位置:
+if not exist %JdkDir% goto getJdkDir
+goto startTools
+
+:startTools
+echo start tools ...
+if "%JdkDir%"=="" (
+rem java -Dfile.encoding=utf-8 -jar chinesecheck.jar
+echo 直接启动工具
+goto end
+)
+rem %JdkDir%java -Dfile.encoding=utf-8 -jar chinesecheck.jar
+echo 间接启动工具
+echo %JdkDir%\java
+goto end
+
+:end
+choice /C YN /M "工具使用结束,是否退出工具(y/n)?"
+if errorlevel 2 (
+goto start)
+echo 工具使用结束,按任意退出... & pause > nul
